@@ -324,8 +324,8 @@ section {
 
 .hero-logo {
   margin: 0 auto 3rem;
-  width: clamp(100px, 15vw, 160px);
-  height: clamp(100px, 15vw, 160px);
+  width: clamp(220px, 32vw, 380px);
+  height: clamp(220px, 32vw, 380px);
   animation: heroLogoIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
@@ -333,7 +333,7 @@ section {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 30px rgba(201, 168, 76, 0.4));
+  filter: drop-shadow(0 0 40px rgba(201, 168, 76, 0.5));
 }
 
 .hero-eyebrow {
