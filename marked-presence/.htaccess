@@ -1,0 +1,5 @@
+RewriteEngine On
+
+# Redirect /index.html to / to keep URLs clean
+RewriteCond %{THE_REQUEST} /index\.html[\s?] [NC]
+RewriteRule ^index\.html$ / [R=301,L]
