@@ -1,3 +1,6 @@
+/* ===== SECTION PATHS ===== */
+const SECTION_IDS = ['hero', 'about', 'services', 'niches', 'why-us', 'portfolio'];
+
 /* ===== NAVIGATION ===== */
 const nav = document.querySelector('.nav');
 const hamburger = document.querySelector('.nav-hamburger');
@@ -31,7 +34,7 @@ mobileNavLinks.forEach(link => {
 
 function updateActiveNavLink() {
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  const navLinks = document.querySelectorAll('.nav-links a');
   let current = '';
 
   sections.forEach(section => {
@@ -41,13 +44,64 @@ function updateActiveNavLink() {
     }
   });
 
+  // Push clean URL based on visible section
+  if (current) {
+    const newPath = current === 'hero' ? '/' : `/${current}`;
+    if (window.location.pathname !== newPath) {
+      history.replaceState(null, '', newPath);
+    }
+  }
+
+  // Highlight active nav link
   navLinks.forEach(link => {
     link.classList.remove('active');
-    if (link.getAttribute('href') === `#${current}`) {
-      link.classList.add('active');
-    }
+    try {
+      const linkPath = new URL(link.href, window.location.origin).pathname;
+      const sectionPath = current === 'hero' ? '/' : `/${current}`;
+      if (linkPath === sectionPath) link.classList.add('active');
+    } catch (_) {}
   });
 }
+
+/* ===== SCROLL TO SECTION ON PAGE LOAD (for direct /niches etc. links) ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname.replace(/^\//, ''); // strip leading /
+  if (path && path !== 'contact') {
+    const target = document.getElementById(path);
+    if (target) {
+      const offset = 80;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'instant' });
+    }
+  }
+});
+
+/* ===== SMOOTH SCROLL FOR INTERNAL SECTION LINKS ===== */
+document.addEventListener('click', e => {
+  const anchor = e.target.closest('a[href]');
+  if (!anchor) return;
+
+  const href = anchor.getAttribute('href');
+  if (!href) return;
+
+  // Handle /sectionId paths (e.g. /about, /services)
+  const match = href.match(/^\/([a-z-]+)(\?.*)?$/);
+  if (match) {
+    const sectionId = match[1];
+    const target = document.getElementById(sectionId);
+    if (target) {
+      e.preventDefault();
+      const offset = 80;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+      history.pushState(null, '', href);
+      // Close mobile nav if open
+      if (hamburger) hamburger.classList.remove('active');
+      if (mobileNav) mobileNav.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+});
 
 /* ===== SCROLL REVEAL ===== */
 const revealObserver = new IntersectionObserver((entries) => {
@@ -62,18 +116,14 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* ===== COUNTER ANIMATION ===== */
 function animateCounter(el, target, duration = 1800, suffix = '') {
-  const start = 0;
   const startTime = performance.now();
-
   function update(currentTime) {
     const elapsed = currentTime - startTime;
     const progress = Math.min(elapsed / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
-    const current = Math.floor(eased * target);
-    el.textContent = current + suffix;
+    el.textContent = Math.floor(eased * target) + suffix;
     if (progress < 1) requestAnimationFrame(update);
   }
-
   requestAnimationFrame(update);
 }
 
@@ -81,10 +131,7 @@ const counterObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting && !entry.target.dataset.counted) {
       entry.target.dataset.counted = 'true';
-      const raw = entry.target.dataset.count;
-      const suffix = entry.target.dataset.suffix || '';
-      const target = parseFloat(raw);
-      animateCounter(entry.target, target, 1800, suffix);
+      animateCounter(entry.target, parseFloat(entry.target.dataset.count), 1800, entry.target.dataset.suffix || '');
     }
   });
 }, { threshold: 0.5 });
@@ -99,9 +146,7 @@ enquiryBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     enquiryBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    if (enquiryTypeInput) {
-      enquiryTypeInput.value = btn.dataset.type;
-    }
+    if (enquiryTypeInput) enquiryTypeInput.value = btn.dataset.type;
   });
 });
 
@@ -111,18 +156,15 @@ if (contactForm) {
   contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const btn = contactForm.querySelector('.form-submit');
-    const originalText = btn.innerHTML;
-
+    const originalHTML = btn.innerHTML;
     btn.innerHTML = '<span>Sending...</span>';
     btn.disabled = true;
-
     setTimeout(() => {
       btn.innerHTML = '<span>Message Sent</span>';
       btn.style.background = 'linear-gradient(135deg, #2d6a2d, #1e4d1e)';
       btn.style.color = '#fff';
-
       setTimeout(() => {
-        btn.innerHTML = originalText;
+        btn.innerHTML = originalHTML;
         btn.disabled = false;
         btn.style.background = '';
         btn.style.color = '';
@@ -134,8 +176,7 @@ if (contactForm) {
 }
 
 /* ===== NEWSLETTER FORM ===== */
-const newsletterForms = document.querySelectorAll('.newsletter-form');
-newsletterForms.forEach(form => {
+document.querySelectorAll('.newsletter-form').forEach(form => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const input = form.querySelector('input');
@@ -147,18 +188,5 @@ newsletterForms.forEach(form => {
       btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>`;
       btn.style.background = '';
     }, 2500);
-  });
-});
-
-/* ===== SMOOTH SCROLL FOR ANCHOR LINKS ===== */
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      const offset = 80;
-      const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
   });
 });
