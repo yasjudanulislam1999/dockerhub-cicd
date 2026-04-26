@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Marked Presence (npx serve)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "marked-presence", "--listen", "3000", "--no-clipboard"],
+      "port": 3000
+    },
+    {
+      "name": "Marked Presence (Python HTTP)",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8080", "--directory", "marked-presence"],
+      "port": 8080
+    }
+  ]
+}
