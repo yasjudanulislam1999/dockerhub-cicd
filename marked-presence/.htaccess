@@ -9,7 +9,7 @@ RewriteCond %{THE_REQUEST} /contact\.html[\s?] [NC]
 RewriteRule ^contact\.html$ /contact [R=301,L]
 
 # Serve index.html for clean section paths
-RewriteRule ^(about|services|niches|portfolio|why-us)$ index.html [L]
+RewriteRule ^(about|services|niches|why-us)$ index.html [L]
 
 # Serve contact.html for /contact
 RewriteRule ^contact$ contact.html [L]
