@@ -1,0 +1,56 @@
+{
+  "name": "Your Name",
+  "title": "Full Stack Developer & AI Engineer",
+  "email": "your.email@example.com",
+  "phone": "+44 XXXX XXXXXX",
+  "location": "London, UK",
+  "linkedin": "https://linkedin.com/in/yourprofile",
+  "github": "https://github.com/yourusername",
+  "education": [
+    {
+      "degree": "BSc Computer Science",
+      "institution": "University Name",
+      "year": "2021–2024",
+      "cgpa": "3.8/4.0"
+    }
+  ],
+  "skills": {
+    "languages": ["Python", "JavaScript", "TypeScript", "SQL"],
+    "frameworks": ["FastAPI", "React", "Node.js", "Flask"],
+    "ai_ml": ["LangChain", "OpenAI API", "Groq API", "Pandas", "scikit-learn"],
+    "devops": ["Docker", "GitHub Actions", "Vercel", "Render"],
+    "databases": ["PostgreSQL", "MongoDB", "Redis"]
+  },
+  "experience": [
+    {
+      "role": "Software Engineer Intern",
+      "company": "Tech Company",
+      "duration": "Jun 2023 – Sep 2023",
+      "description": "Built REST APIs with FastAPI, improved query performance by 40%, collaborated in Agile sprints."
+    }
+  ],
+  "projects": [
+    {
+      "name": "Portfolio Agent",
+      "description": "AI-powered chatbot that represents a job candidate, built with FastAPI, React, and Groq API.",
+      "tech": ["FastAPI", "React", "Groq API", "Python"],
+      "github": "https://github.com/yourusername/portfolio-agent",
+      "live": "https://your-portfolio-agent.vercel.app"
+    },
+    {
+      "name": "E-commerce Analytics Dashboard",
+      "description": "Real-time sales dashboard with predictive analytics using ML models.",
+      "tech": ["Python", "Pandas", "React", "PostgreSQL"],
+      "github": "https://github.com/yourusername/ecommerce-dashboard"
+    }
+  ],
+  "certifications": [
+    "AWS Cloud Practitioner",
+    "Google Data Analytics Certificate"
+  ],
+  "achievements": [
+    "Hackathon Winner – University Tech Fest 2023",
+    "Dean's List – Academic Excellence 2022 & 2023"
+  ],
+  "languages_spoken": ["English (Fluent)", "Bengali (Native)"]
+}
